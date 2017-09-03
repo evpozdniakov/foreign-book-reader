@@ -1,5 +1,10 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './App';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import App from './ReaderUI'
+import makeStore from './ReaderUI/store'
 
-ReactDOM.render(<App />, document.getElementById('root'));
+const store = makeStore()
+const app = <App store={store} />
+const ctnr = document.getElementById('root')
+
+ReactDOM.render(app, ctnr)
