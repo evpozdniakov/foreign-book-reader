@@ -1,12 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import AddBookForm from './AddBookForm'
+import FieldPair from '../../components/FieldPair'
 
-class Main extends Component {
+class AddBookForm extends Component {
   render() {
     return (
       <div>
-        <AddBookForm />
+        <FieldPair label="i am label">
+          <p>I am field</p>
+        </FieldPair>
       </div>
     )
   }
@@ -16,4 +18,4 @@ export default connect(state => {
   const { internal } = state
   return {internal}
 }, {
-})(Main)
+})(AddBookForm)

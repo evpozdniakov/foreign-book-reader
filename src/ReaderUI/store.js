@@ -12,7 +12,7 @@ export default function makeStore(data) {
   const middlewares = compose(getMiddleware())
   const store = createStore(reducer, initState, middlewares)
 
-  if (true) {
+  if (NODE_ENV === 'development') {
     window.store = store
   }
 
@@ -30,7 +30,7 @@ function getInitState(data) {
 /**
 */
 function getMiddleware() {
-  if (true) {
+  if (NODE_ENV === 'development') {
     return applyMiddleware(api, createLogger())
   }
 
