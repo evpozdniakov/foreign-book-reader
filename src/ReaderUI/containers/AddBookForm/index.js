@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import FieldPair from '../../components/FieldPair'
+import FieldPair from 'components/FieldPair'
+import './style.css'
 
 class AddBookForm extends Component {
   render() {

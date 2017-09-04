@@ -27,6 +27,15 @@ module.exports = {
       test: /\.js$/,
       loaders: ['react-hot', 'babel'],
       include: path.join(__dirname, 'src')
-    }]
+    }, {
+      test: /\.css$/,
+      loaders: ['style-loader', 'css-loader'],
+      include: path.join(__dirname, 'src')
+    }],
+  },
+  resolve: {
+    alias: {
+      components: path.resolve(__dirname, 'src/components'),
+    }
   }
 }
