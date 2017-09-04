@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import './style.less';
 
 var propTypes;
 
@@ -54,10 +55,10 @@ class InputFile extends Component {
   curryMouseMove() {
     return ev => {
       const { ctnr, inpt } = this.refs;
-      const offset = $(ctnr).offset();
-      const inpt$ = $(inpt);
-      const top = ev.pageY - offset.top - (inpt$.innerHeight() / 2);
-      const left = ev.pageX - offset.left - (inpt$.innerWidth() * 0.95);
+      const offsetL = ctnr.offsetLeft;
+      const offsetT = ctnr.offsetTop;
+      const top = ev.pageY - offsetT - (inpt.offsetHeight / 2);
+      const left = ev.pageX - offsetL - (inpt.offsetWidth * 0.95);
 
       this.setState({top, left});
     };
@@ -79,7 +80,7 @@ class InputFile extends Component {
       <div ref="ctnr" className="react-input-file" onMouseMove={this.curryMouseMove()}>
         <input ref="inpt" {...props} />
         <span>{fileName || '\u00a0'}</span>
-        <button className="icon icon-search"></button>
+        <button>…</button>
       </div>
     );
   }
