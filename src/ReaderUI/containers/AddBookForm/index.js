@@ -5,7 +5,10 @@ import InputFile from 'components/InputFile'
 import Input from 'components/Input'
 import Textarea from 'components/Textarea'
 import './style.css'
-import { changeOriginal } from '../../actions/book'
+import {
+  changeTitle,
+  changeOriginal,
+} from '../../actions/book'
 
 class AddBookForm extends Component {
   render() {
@@ -19,9 +22,14 @@ class AddBookForm extends Component {
   }
 
   renderTitleField() {
+    const {
+      book: { title },
+      changeTitleAction,
+    } = this.props
+
     const props = {
-      value: '',
-      onChange: () => {},
+      value: title,
+      onChange: changeTitleAction,
     }
 
     return (
@@ -39,9 +47,7 @@ class AddBookForm extends Component {
 
     const props = {
       value: original,
-      onChange: text => {
-        changeOriginalAction(text)
-      },
+      onChange: changeOriginalAction,
     }
 
     return (
@@ -81,4 +87,5 @@ export default connect(state => {
   return {internal, book}
 }, {
   changeOriginalAction: changeOriginal,
+  changeTitleAction: changeTitle,
 })(AddBookForm)

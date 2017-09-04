@@ -1,5 +1,6 @@
 import {
   CHANGE,
+  _TITLE,
   _ORIGINAL,
 } from '../constants'
 
@@ -11,6 +12,12 @@ export default (state={}, action) => {
       return {
         ...state,
         original: data.original,
+      }
+
+    case CHANGE + _TITLE:
+      return {
+        ...state,
+        title: data.title,
       }
 
     default:
