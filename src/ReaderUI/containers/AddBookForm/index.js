@@ -3,14 +3,16 @@ import { connect } from 'react-redux'
 import FieldPair from 'components/FieldPair'
 import InputFile from 'components/InputFile'
 import Input from 'components/Input'
+import Textarea from 'components/Textarea'
 import './style.css'
+import { changeOriginal } from '../../actions/book'
 
 class AddBookForm extends Component {
   render() {
     return (
       <div>
         {this.renderTitleField()}
-        {this.renderUploadOriginal()}
+        {this.renderOriginalField()}
         {this.renderUploadTranslation()}
       </div>
     )
@@ -25,6 +27,26 @@ class AddBookForm extends Component {
     return (
       <FieldPair label="Название книги">
         <Input {...props} />
+      </FieldPair>
+    )
+  }
+
+  renderOriginalField() {
+    const {
+      book: { original },
+      changeOriginalAction,
+    } = this.props
+
+    const props = {
+      value: original,
+      onChange: text => {
+        changeOriginalAction(text)
+      },
+    }
+
+    return (
+      <FieldPair label="Текст книги">
+        <Textarea {...props} />
       </FieldPair>
     )
   }
@@ -55,7 +77,8 @@ class AddBookForm extends Component {
 }
 
 export default connect(state => {
-  const { internal } = state
-  return {internal}
+  const { internal, book } = state
+  return {internal, book}
 }, {
+  changeOriginalAction: changeOriginal,
 })(AddBookForm)
