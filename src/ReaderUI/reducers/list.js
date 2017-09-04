@@ -1,18 +1,20 @@
 import {
-  DISPLAY,
-  _FORM,
-  _LIST,
+  ADD,
+  _BOOK,
 } from '../constants'
 
 export default (state={}, action) => {
   const { type, data } = action
 
   switch (type) {
-    case DISPLAY + _LIST:
+    case ADD + _BOOK: {
+      let clonedBooks = cloneBooks(state)
+
       return {
         ...state,
-        mode: _LIST,
+        books: clonedBooks.concat(data.book)
       }
+    }
 
     default:
       return state
@@ -21,10 +23,16 @@ export default (state={}, action) => {
 
 export function getInitState(data) {
   const {
-    mode=_FORM
+    books=[],
   } = data || {}
 
   return {
-    mode,
+    books,
   }
+}
+
+function cloneBooks(state) {
+  return state.books.map(item => {
+    return {...item}
+  })
 }

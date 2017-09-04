@@ -12,9 +12,9 @@ import {
 
 class AddBookForm extends Component {
   curryAddBook() {
-    return () => {
+    return ev => {
       this.props.addBookAction()
-      return false
+      ev.preventDefault()
     }
   }
 
@@ -99,8 +99,8 @@ class AddBookForm extends Component {
 }
 
 export default connect(state => {
-  const { internal, book } = state
-  return {internal, book}
+  const { book, list } = state
+  return {book, list}
 }, {
   addBookAction: addBook,
   changeOriginalAction: changeOriginal,

@@ -6,7 +6,7 @@ import {
 } from '../constants'
 
 import { makeTitleFromTextIfNeeded } from './book'
-import { tryDisplayBookList } from './internal'
+import { handleAddBook } from './internal'
 
 export default store => next => action => {
   const { type } = action
@@ -19,8 +19,7 @@ export default store => next => action => {
     }
 
     case ADD + _BOOK: {
-      next(action)
-      tryDisplayBookList(store)
+      handleAddBook(store, next, action)
       break
     }
 
