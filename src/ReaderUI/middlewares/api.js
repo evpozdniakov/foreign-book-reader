@@ -6,7 +6,7 @@ import {
 } from '../constants'
 
 import { makeTitleFromTextIfNeeded } from './book'
-import { handleAddBook } from './internal'
+import { handleAddBook } from './list'
 
 export default store => next => action => {
   const { type } = action

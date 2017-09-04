@@ -1,7 +1,14 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
+import { openReader } from '../actions/internal'
 
 class BookList extends Component {
+  curryOpenReader(id) {
+    return () => {
+      this.props.openReaderAction(id)
+    }
+  }
+
   render() {
     const { books } = this.props.list
 
@@ -11,9 +18,16 @@ class BookList extends Component {
   }
 
   renderLinkToBook(book) {
+    const props = {
+      href: 'javascript:;',
+      onClick: this.curryOpenReader(book.id),
+    }
+
     return (
-      <div>
-        <a>{book.title}</a>
+      <div key={book.id}>
+        <a {...props}>
+          {book.title}
+        </a>
       </div>
     )
   }
@@ -23,4 +37,5 @@ export default connect(state => {
   const { list } = state
   return {list}
 }, {
+  openReaderAction: openReader
 })(BookList)
