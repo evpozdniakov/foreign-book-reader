@@ -1,0 +1,31 @@
+{
+  "name": "foreign-book-reader",
+  "description": "Boilerplate for ReactJS project with hot code reloading",
+  "main": "",
+  "authors": [
+    "Dan Abramov <dan.abramov@me.com> (http://github.com/gaearon)"
+  ],
+  "license": "MIT",
+  "keywords": [
+    "react",
+    "reactjs",
+    "boilerplate",
+    "hot",
+    "reload",
+    "hmr",
+    "live",
+    "edit",
+    "webpack"
+  ],
+  "homepage": "",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "reset-css": "^2.2.1"
+  }
+}

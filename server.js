@@ -6,6 +6,9 @@ var config = require('./webpack.config');
 var app = express();
 var compiler = webpack(config);
 
+app.use(express.static('public'));
+app.use(express.static('bower_components'));
+
 app.use(require('webpack-dev-middleware')(compiler, {
   publicPath: config.output.publicPath
 }));

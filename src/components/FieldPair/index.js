@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import './style.less';
 
 export const LAYOUT = {
 	VERTICAL: 'vrt',
@@ -36,7 +37,7 @@ export default class FieldPair extends Component {
 			style,
 		} = this.props;
 
-		const className = `fld-pair ${origClassName} layout-${layout}`;
+		const className = `field-pair ${origClassName} layout-${layout}`;
 
 		return (
 			<div className={className} style={style}>
