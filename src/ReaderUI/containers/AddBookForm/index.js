@@ -6,18 +6,27 @@ import Input from 'components/Input'
 import Textarea from 'components/Textarea'
 import './style.css'
 import {
+  addBook,
   changeTitle,
   changeOriginal,
 } from '../../actions/book'
 
 class AddBookForm extends Component {
+  curryAddBook() {
+    return () => {
+      this.props.addBookAction()
+      return false
+    }
+  }
+
   render() {
     return (
-      <div>
+      <form onSubmit={this.curryAddBook()}>
         {this.renderTitleField()}
         {this.renderOriginalField()}
         {this.renderUploadTranslation()}
-      </div>
+        {this.renderSaveButton()}
+      </form>
     )
   }
 
@@ -80,12 +89,21 @@ class AddBookForm extends Component {
       </FieldPair>
     )
   }
+
+  renderSaveButton() {
+    return (
+      <div className="paragraph">
+        <button type="submit">Добавить книгу</button>
+      </div>
+    )
+  }
 }
 
 export default connect(state => {
   const { internal, book } = state
   return {internal, book}
 }, {
+  addBookAction: addBook,
   changeOriginalAction: changeOriginal,
   changeTitleAction: changeTitle,
 })(AddBookForm)

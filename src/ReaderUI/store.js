@@ -3,6 +3,7 @@ import { createLogger } from 'redux-logger'
 
 import reducer from './reducers'
 import { getInitState as getInternalInitState } from './reducers/internal'
+import { getInitState as getBookInitState } from './reducers/book'
 import api from './middlewares/api'
 
 /**
@@ -24,6 +25,7 @@ export default function makeStore(data) {
 function getInitState(data) {
   return {
     internal: getInternalInitState(data),
+    book: getBookInitState(data),
   }
 }
 

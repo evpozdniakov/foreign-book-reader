@@ -27,10 +27,12 @@ export default (state={}, action) => {
 
 export function getInitState(data) {
   const {
+    title='',
     original='',
   } = data || {}
 
   return {
+    title,
     original,
   }
 }

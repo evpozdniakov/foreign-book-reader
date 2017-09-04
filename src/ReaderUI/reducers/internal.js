@@ -1,20 +1,30 @@
+import {
+  DISPLAY,
+  _FORM,
+  _LIST,
+} from '../constants'
+
 export default (state={}, action) => {
   const { type } = action
 
   switch (type) {
-    /*case VALIDATE:
+    case DISPLAY + _LIST:
       return {
         ...state,
-        validationCounter: 1 + state.validationCounter,
-      }*/
+        mode: _LIST,
+      }
 
     default:
       return state
   }
 }
 
-export function getInitState() {
+export function getInitState(data) {
+  const {
+    mode=_FORM
+  } = data || {}
+
   return {
-    validationCounter: 0,
+    mode,
   }
 }
