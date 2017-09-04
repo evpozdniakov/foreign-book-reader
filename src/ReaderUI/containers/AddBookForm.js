@@ -4,12 +4,11 @@ import FieldPair from 'components/FieldPair'
 import InputFile from 'components/InputFile'
 import Input from 'components/Input'
 import Textarea from 'components/Textarea'
-import './style.css'
 import {
   addBook,
   changeTitle,
   changeOriginal,
-} from '../../actions/book'
+} from '../actions/book'
 
 class AddBookForm extends Component {
   curryAddBook() {
