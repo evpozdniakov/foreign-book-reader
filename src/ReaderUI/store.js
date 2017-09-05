@@ -5,6 +5,7 @@ import reducer from './reducers'
 import { getInitState as getInternalInitState } from './reducers/internal'
 import { getInitState as getBookInitState } from './reducers/book'
 import { getInitState as getListInitState } from './reducers/list'
+import { getInitState as getReaderInitState } from './reducers/reader'
 import api from './middlewares/api'
 
 /**
@@ -28,6 +29,7 @@ function getInitState(data) {
     internal: getInternalInitState(data),
     book: getBookInitState(data),
     list: getListInitState(data),
+    reader: getReaderInitState(data),
   }
 }
 
