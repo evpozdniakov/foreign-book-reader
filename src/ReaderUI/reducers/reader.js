@@ -1,18 +1,17 @@
-/*import {
-  DISPLAY,
-  _FORM,
-  _LIST,
-} from '../constants'*/
+import {
+  OPEN,
+  _READER,
+} from '../constants'
 
 export default (state={}, action) => {
   const { type, data } = action
 
   switch (type) {
-    /*case DISPLAY + _LIST:
+    case OPEN + _READER:
       return {
         ...state,
-        mode: _LIST,
-      }*/
+        book: data.book,
+      }
 
     default:
       return state
@@ -21,10 +20,10 @@ export default (state={}, action) => {
 
 export function getInitState(data) {
   const {
-    original=''
+    book={}
   } = data || {}
 
   return {
-    original,
+    book,
   }
 }

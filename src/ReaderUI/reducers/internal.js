@@ -1,7 +1,9 @@
 import {
   DISPLAY,
+  OPEN,
   _FORM,
   _LIST,
+  _READER,
 } from '../constants'
 
 export default (state={}, action) => {
@@ -12,6 +14,12 @@ export default (state={}, action) => {
       return {
         ...state,
         mode: _LIST,
+      }
+
+    case OPEN + _READER:
+      return {
+        ...state,
+        mode: _READER,
       }
 
     default:

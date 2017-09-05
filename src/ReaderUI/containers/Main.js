@@ -2,9 +2,11 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import AddBookForm from './AddBookForm'
 import BookList from './BookList'
+import Reader from './Reader'
 import {
   _FORM,
   _LIST,
+  _READER,
 } from '../constants'
 
 class Main extends Component {
@@ -13,6 +15,7 @@ class Main extends Component {
       <div>
         {this.renderForm()}
         {this.renderList()}
+        {this.renderReader()}
       </div>
     )
   }
@@ -35,6 +38,16 @@ class Main extends Component {
     }
 
     return <BookList />
+  }
+
+  renderReader() {
+    const { mode } = this.props.internal
+
+    if (mode !== _READER) {
+      return null
+    }
+
+    return <Reader />
   }
 }
 
