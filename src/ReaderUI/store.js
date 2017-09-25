@@ -8,10 +8,8 @@ import { getInitState as getListInitState } from './reducers/list'
 import { getInitState as getReaderInitState } from './reducers/reader'
 import api from './middlewares/api'
 
-/**
-*/
-export default function makeStore(data) {
-  const initState = getInitState(data)
+export default function makeStore() {
+  const initState = readInitStateFromLocalStorage() || deserialize()
   const middlewares = compose(getMiddleware())
   const store = createStore(reducer, initState, middlewares)
 
@@ -22,23 +20,48 @@ export default function makeStore(data) {
   return store
 }
 
-/**
-*/
-function getInitState(data) {
-  return {
-    internal: getInternalInitState(data),
-    book: getBookInitState(data),
-    list: getListInitState(data),
-    reader: getReaderInitState(data),
-  }
-}
-
-/**
-*/
 function getMiddleware() {
   if (NODE_ENV === 'development') {
     return applyMiddleware(api, createLogger())
   }
 
   return applyMiddleware(api)
+}
+
+function deserialize(jsonStr) {
+  const {
+    internal={},
+    list={},
+    reader={},
+    book={},
+  } = JSON.parse(jsonStr || '{}')
+
+  return {
+    internal: getInternalInitState(internal),
+    book: getBookInitState(book),
+    list: getListInitState(list),
+    reader: getReaderInitState(reader),
+  }
+}
+
+function readInitStateFromLocalStorage() {
+  if (!localStorage) {
+    return null
+  }
+
+  const stateJsonStr = localStorage.getItem('state')
+
+  if (!stateJsonStr) {
+    return null
+  }
+
+  const state = JSON.parse(stateJsonStr)
+
+  state.list.books.forEach(book => {
+    const { id } = book
+
+    book.original = localStorage.getItem(`orig-${id}`)
+  })
+
+  return state
 }
