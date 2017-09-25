@@ -4,6 +4,7 @@ import FieldPair from 'components/FieldPair'
 import InputFile from 'components/InputFile'
 import Input from 'components/Input'
 import Textarea from 'components/Textarea'
+import '../style/AddBookForm.less'
 import {
   addBook,
   changeTitle,
@@ -20,7 +21,7 @@ class AddBookForm extends Component {
 
   render() {
     return (
-      <form onSubmit={this.curryAddBook()}>
+      <form className="add-book-form" onSubmit={this.curryAddBook()}>
         {this.renderTitleField()}
         {this.renderOriginalField()}
         {this.renderUploadTranslation()}
@@ -42,7 +43,7 @@ class AddBookForm extends Component {
 
     return (
       <FieldPair label="Название книги">
-        <Input {...props} />
+        <Input className="title-field" {...props} />
       </FieldPair>
     )
   }
@@ -60,7 +61,7 @@ class AddBookForm extends Component {
 
     return (
       <FieldPair label="Текст книги">
-        <Textarea {...props} />
+        <Textarea className="original-text-field" {...props} />
       </FieldPair>
     )
   }
@@ -78,7 +79,8 @@ class AddBookForm extends Component {
   }
 
   renderUploadTranslation() {
-    const props = {
+    return null;
+    /*const props = {
       onFileChange: () => {}
     }
 
@@ -86,7 +88,7 @@ class AddBookForm extends Component {
       <FieldPair required={true} label="Перевод книги">
         <InputFile {...props} />
       </FieldPair>
-    )
+    )*/
   }
 
   renderSaveButton() {
