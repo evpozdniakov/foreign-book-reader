@@ -12,7 +12,7 @@ export default (state={}, action) => {
 
       return {
         ...state,
-        books: clonedBooks.concat(data.book)
+        items: clonedBooks.concat(data.book)
       }
     }
 
@@ -23,26 +23,26 @@ export default (state={}, action) => {
 
 export function getInitState(data) {
   const {
-    books=[],
+    items=[],
   } = data || {}
 
   return {
-    books,
+    items,
   }
 }
 
 function cloneBooks(state) {
-  return state.books.map(item => {
+  return state.items.map(item => {
     return {...item}
   })
 }
 
 export function serializeState(data) {
-  const { books } = data;
+  const { items } = data;
 
   return {
     ...data,
-    books: books.map(clearOriginal),
+    items: items.map(clearOriginal),
   }
 }
 

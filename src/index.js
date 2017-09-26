@@ -46,8 +46,8 @@ function storeAppStateLocally(state) {
 }
 
 function storeOriginalsLocally(state) {
-  const { books } = state.list
-  const ids = books.map(book => book.id)
+  const { items } = state.books
+  const ids = items.map(book => book.id)
 
   Object.keys(originalsMD5).forEach(id => {
     if (ids.includes(id)) {
@@ -57,7 +57,7 @@ function storeOriginalsLocally(state) {
     localStorage.removeItem(getOriginalKey(id))
   })
 
-  books.forEach(book => {
+  items.forEach(book => {
     const { id, original } = book
 
     if (originalsMD5[id] === JSON.stringify(original)) {
@@ -81,7 +81,7 @@ function readStateFromLocalStorage() {
 
   const state = JSON.parse(appStateJsonString)
 
-  state.list.books.forEach(book => {
+  state.books.items.forEach(book => {
     const { id } = book
 
     book.original = localStorage.getItem(getOriginalKey(id))

@@ -8,7 +8,7 @@ import {
 } from '../constants'
 
 import { makeTitleFromTextIfNeeded } from './bookForm'
-import { handleAddBook } from './list'
+import { handleAddBook } from './books'
 import { handleOpenReader } from './reader'
 
 export default store => next => action => {

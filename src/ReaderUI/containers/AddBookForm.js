@@ -101,8 +101,8 @@ class AddBookForm extends Component {
 }
 
 export default connect(state => {
-  const { bookForm, list } = state
-  return {bookForm, list}
+  const { bookForm, books } = state
+  return {bookForm, books}
 }, {
   addBookAction: addBook,
   changeOriginalAction: changeOriginal,

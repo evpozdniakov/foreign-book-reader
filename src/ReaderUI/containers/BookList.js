@@ -10,10 +10,10 @@ class BookList extends Component {
   }
 
   render() {
-    const { books } = this.props.list
+    const { items } = this.props.books
 
     return (
-      <div>{books.map(this.renderLinkToBook.bind(this))}</div>
+      <div>{items.map(this.renderLinkToBook.bind(this))}</div>
     )
   }
 
@@ -34,8 +34,8 @@ class BookList extends Component {
 }
 
 export default connect(state => {
-  const { list } = state
-  return {list}
+  const { books } = state
+  return {books}
 }, {
   openReaderAction: openReader
 })(BookList)

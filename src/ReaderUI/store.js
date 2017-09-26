@@ -9,14 +9,14 @@ import {
 } from './reducers/internal'
 
 import {
-  getInitState as getBookInitState,
-  serializeState as serializeBookState,
+  getInitState as getBookFormInitState,
+  serializeState as serializeBookFormState,
 } from './reducers/bookForm'
 
 import {
-  getInitState as getListInitState,
-  serializeState as serializeListState,
-} from './reducers/list'
+  getInitState as getBooksInitState,
+  serializeState as serializeBooksState,
+} from './reducers/books'
 
 import {
   getInitState as getReaderInitState,
@@ -48,15 +48,15 @@ function getMiddleware() {
 function deserialize(data) {
   const {
     internal={},
-    list={},
+    books={},
     reader={},
     bookForm={},
   } = data || {}
 
   return {
     internal: getInternalInitState(internal),
-    bookForm: getBookInitState(bookForm),
-    list: getListInitState(list),
+    bookForm: getBookFormInitState(bookForm),
+    books: getBooksInitState(books),
     reader: getReaderInitState(reader),
   }
 }
@@ -64,8 +64,8 @@ function deserialize(data) {
 export function serializeAppState(state) {
   return {
     internal: serializeInternalState(state.internal),
-    bookForm: serializeBookState(state.bookForm),
-    list: serializeListState(state.list),
+    bookForm: serializeBookFormState(state.bookForm),
+    books: serializeBooksState(state.books),
     reader: serializeReaderState(state.reader),
   }
 }
