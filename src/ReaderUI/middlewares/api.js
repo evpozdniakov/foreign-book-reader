@@ -7,7 +7,7 @@ import {
   _READER,
 } from '../constants'
 
-import { makeTitleFromTextIfNeeded } from './book'
+import { makeTitleFromTextIfNeeded } from './bookForm'
 import { handleAddBook } from './list'
 import { handleOpenReader } from './reader'
 

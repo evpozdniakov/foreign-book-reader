@@ -11,7 +11,7 @@ import {
 import {
   getInitState as getBookInitState,
   serializeState as serializeBookState,
-} from './reducers/book'
+} from './reducers/bookForm'
 
 import {
   getInitState as getListInitState,
@@ -50,43 +50,21 @@ function deserialize(data) {
     internal={},
     list={},
     reader={},
-    book={},
+    bookForm={},
   } = data || {}
 
   return {
     internal: getInternalInitState(internal),
-    book: getBookInitState(book),
+    bookForm: getBookInitState(bookForm),
     list: getListInitState(list),
     reader: getReaderInitState(reader),
   }
 }
 
-/*function readInitStateFromLocalStorage() {
-  if (!localStorage) {
-    return null
-  }
-
-  const stateJsonStr = localStorage.getItem('state')
-
-  if (!stateJsonStr) {
-    return null
-  }
-
-  const state = JSON.parse(stateJsonStr)
-
-  state.list.books.forEach(book => {
-    const { id } = book
-
-    book.original = localStorage.getItem(`orig-${id}`)
-  })
-
-  return state
-}*/
-
 export function serializeAppState(state) {
   return {
     internal: serializeInternalState(state.internal),
-    book: serializeBookState(state.book),
+    bookForm: serializeBookState(state.bookForm),
     list: serializeListState(state.list),
     reader: serializeReaderState(state.reader),
   }

@@ -9,7 +9,7 @@ import {
   addBook,
   changeTitle,
   changeOriginal,
-} from '../actions/book'
+} from '../actions/bookForm'
 
 class AddBookForm extends Component {
   curryAddBook() {
@@ -32,7 +32,7 @@ class AddBookForm extends Component {
 
   renderTitleField() {
     const {
-      book: { title },
+      bookForm: { title },
       changeTitleAction,
     } = this.props
 
@@ -50,7 +50,7 @@ class AddBookForm extends Component {
 
   renderOriginalField() {
     const {
-      book: { original },
+      bookForm: { original },
       changeOriginalAction,
     } = this.props
 
@@ -101,8 +101,8 @@ class AddBookForm extends Component {
 }
 
 export default connect(state => {
-  const { book, list } = state
-  return {book, list}
+  const { bookForm, list } = state
+  return {bookForm, list}
 }, {
   addBookAction: addBook,
   changeOriginalAction: changeOriginal,

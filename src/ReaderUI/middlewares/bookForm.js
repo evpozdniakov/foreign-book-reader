@@ -1,8 +1,8 @@
-import { changeTitle } from '../actions/book'
+import { changeTitle } from '../actions/bookForm'
 
 
 export function makeTitleFromTextIfNeeded(store) {
-  const { title, original } = store.getState().book
+  const { title, original } = store.getState().bookForm
 
   if (title.length) {
     return
