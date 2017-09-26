@@ -36,3 +36,20 @@ function cloneBooks(state) {
     return {...item}
   })
 }
+
+export function serializeState(data) {
+  const { books } = data;
+
+  return {
+    ...data,
+    books: books.map(clearOriginal),
+  }
+}
+
+function clearOriginal(book) {
+  const _book = {...book}
+
+  delete _book.original
+
+  return _book
+}

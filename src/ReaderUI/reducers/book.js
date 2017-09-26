@@ -36,3 +36,7 @@ export function getInitState(data) {
     original,
   }
 }
+
+export function serializeState(data) {
+  return data
+}

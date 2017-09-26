@@ -2,14 +2,31 @@ import { createStore, compose, applyMiddleware } from 'redux'
 import { createLogger } from 'redux-logger'
 
 import reducer from './reducers'
-import { getInitState as getInternalInitState } from './reducers/internal'
-import { getInitState as getBookInitState } from './reducers/book'
-import { getInitState as getListInitState } from './reducers/list'
-import { getInitState as getReaderInitState } from './reducers/reader'
+
+import {
+  getInitState as getInternalInitState,
+  serializeState as serializeInternalState,
+} from './reducers/internal'
+
+import {
+  getInitState as getBookInitState,
+  serializeState as serializeBookState,
+} from './reducers/book'
+
+import {
+  getInitState as getListInitState,
+  serializeState as serializeListState,
+} from './reducers/list'
+
+import {
+  getInitState as getReaderInitState,
+  serializeState as serializeReaderState,
+} from './reducers/reader'
+
 import api from './middlewares/api'
 
-export default function makeStore() {
-  const initState = readInitStateFromLocalStorage() || deserialize()
+export function makeStore(data) {
+  const initState = deserialize(data)
   const middlewares = compose(getMiddleware())
   const store = createStore(reducer, initState, middlewares)
 
@@ -28,13 +45,13 @@ function getMiddleware() {
   return applyMiddleware(api)
 }
 
-function deserialize(jsonStr) {
+function deserialize(data) {
   const {
     internal={},
     list={},
     reader={},
     book={},
-  } = JSON.parse(jsonStr || '{}')
+  } = data || {}
 
   return {
     internal: getInternalInitState(internal),
@@ -44,7 +61,7 @@ function deserialize(jsonStr) {
   }
 }
 
-function readInitStateFromLocalStorage() {
+/*function readInitStateFromLocalStorage() {
   if (!localStorage) {
     return null
   }
@@ -64,4 +81,13 @@ function readInitStateFromLocalStorage() {
   })
 
   return state
+}*/
+
+export function serializeAppState(state) {
+  return {
+    internal: serializeInternalState(state.internal),
+    book: serializeBookState(state.book),
+    list: serializeListState(state.list),
+    reader: serializeReaderState(state.reader),
+  }
 }

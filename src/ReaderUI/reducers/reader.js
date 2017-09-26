@@ -27,3 +27,7 @@ export function getInitState(data) {
     book,
   }
 }
+
+export function serializeState(data) {
+  return data
+}
