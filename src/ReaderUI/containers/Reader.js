@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { displayList } from '../actions/internal'
+import { translateText } from '../actions/reader'
 import '../style/Reader.less'
 
 var propTypes
@@ -10,16 +11,32 @@ var selectionchangeTimer
 if (NODE_ENV === 'development') {
   propTypes = {
     displayListAction: PropTypes.func.isRequired,
+    translateTextAction: PropTypes.func.isRequired,
   }
 }
 
 class Reader extends Component {
   componentDidMount() {
-    document.addEventListener('selectionchange', this.handleSelectionChange.bind(this));
+    // document.addEventListener('selectionchange', this.handleSelectionChange.bind(this))
+    this.bookCtnr.addEventListener('mouseup', this.handleMousup.bind(this))
   }
 
   componentWillUnmount() {
-    document.removeEventListener('selectionchange', this.handleSelectionChange.bind(this));
+    // document.removeEventListener('selectionchange', this.handleSelectionChange.bind(this))
+    this.bookCtnr.removeEventListener('mouseup', this.handleMousup.bind(this))
+  }
+
+  get bookCtnr() {
+    return document.querySelector('.book-ctnr')
+  }
+
+  handleMousup() {
+    if (selectionchangeTimer) {
+      clearTimeout(selectionchangeTimer)
+    }
+
+    this.modifySelection()
+    this.translateSelectedText()
   }
 
   handleSelectionChange() {
@@ -27,7 +44,7 @@ class Reader extends Component {
       clearTimeout(selectionchangeTimer)
     }
 
-    selectionchangeTimer = setTimeout(this.modifySelection, 200)
+    selectionchangeTimer = setTimeout(this.modifySelection, 500)
   }
 
   modifySelection() {
@@ -49,21 +66,13 @@ class Reader extends Component {
     }
 
     const text = anchorNode.textContent
+    const isL2R = anchorOffset <= focusOffset
     const selectionStartsAt = Math.min(anchorOffset, focusOffset)
     const selectionEndsAt = Math.max(anchorOffset, focusOffset)
-
-    var spaceBefore = text.lastIndexOf(' ', selectionStartsAt)
-
-    if (spaceBefore < 0) {
-      spaceBefore = 0
-    }
-
-    var spaceAfter = text.indexOf(' ', selectionEndsAt)
-
-    if (spaceAfter < 0) {
-      spaceAfter = text.length
-    }
-
+    const indexOfSpaceBefore = text.lastIndexOf(' ', selectionStartsAt)
+    const spaceBefore = indexOfSpaceBefore < 0 ? 0 : indexOfSpaceBefore
+    const indexOfSpaceAfter = text.indexOf(' ', selectionEndsAt)
+    const spaceAfter = indexOfSpaceAfter < 0 ? text.length :indexOfSpaceAfter
     const durtyPartBefore = text.substring(spaceBefore, selectionStartsAt)
     const durtyPartAfter = text.substring(selectionEndsAt, spaceAfter)
     const partBeforeMatch = /\W?(\w+)$/.exec(durtyPartBefore)
@@ -72,34 +81,39 @@ class Reader extends Component {
     const partAfterMatch = /^(\w+)\W?/.exec(durtyPartAfter)
     const partAfter = partAfterMatch ? partAfterMatch[1] : ''
 
-    if (!partBefore && !partAfter) {
+    if (!partAfter && !partBefore) {
       return
     }
 
-    const newSelectonStart = selectionStartsAt - partBefore.length
-    const newSelectionEnd = selectionEndsAt + partAfter.length
     const range = so.getRangeAt(0)
 
-    if (newSelectonStart < selectionStartsAt) {
-      range.setStart(anchorNode, newSelectonStart)
+    if (partBefore) {
+      range.setStart(anchorNode, selectionStartsAt - partBefore.length)
     }
 
-    if (newSelectionEnd > selectionEndsAt) {
-      range.setEnd(anchorNode, newSelectionEnd)
+    if (partAfter) {
+      range.setEnd(anchorNode, selectionEndsAt + partAfter.length)
+    }
+  }
+
+  translateSelectedText() {
+    const text = window.getSelection().toString()
+
+    if (text) {
+      this.props.translateTextAction(text)
     }
   }
 
   render() {
-    const {
-      title,
-      original,
-    } = this.props.reader.book
-
     return (
       <div className="reader">
-        {this.renderBackLink()}
-        <h1 className="book-title">{title}</h1>
-        <div className="book-text">{original}</div>
+        <div className="main-ctnr">
+          {this.renderBackLink()}
+          {this.renderBook()}
+        </div>
+        <aside className="definition-ctnr">
+          {this.renderDefinition()}
+        </aside>
       </div>
     )
   }
@@ -109,7 +123,42 @@ class Reader extends Component {
 
     return (
       <div className="controls">
-        <button onClick={displayListAction}>⬅ Menu</button>
+        <button onClick={displayListAction}>⬅ Назад</button>
+      </div>
+    )
+  }
+
+  renderBook() {
+    const {
+      title,
+      original,
+    } = this.props.reader.book
+
+    return (
+      <div className="book-ctnr">
+        <h1 className="book-title">{title}</h1>
+        <div className="book-text">{original}</div>
+      </div>
+    );
+  }
+
+  renderDefinition() {
+    const { reader } = this.props
+    const { isTranslating, text, error } = reader
+
+    var { translatedText } = reader
+
+    if (isTranslating) {
+      translatedText = '...'
+    }
+    else if (error) {
+      translatedText = 'TRANSLATION ERROR'
+    }
+
+    return (
+      <div className="translation-ctnr">
+        <div className="text">{text}</div>
+        <div className="translatedText">{translatedText}</div>
       </div>
     )
   }
@@ -120,4 +169,5 @@ export default connect(state => {
   return {reader}
 }, {
   displayListAction: displayList,
+  translateTextAction: translateText,
 })(Reader)

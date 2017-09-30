@@ -1,6 +1,7 @@
 import {
   DISPLAY,
   OPEN,
+  _BOOK,
   _FORM,
   _LIST,
   _READER,
@@ -10,6 +11,12 @@ export default (state={}, action) => {
   const { type, data } = action
 
   switch (type) {
+    case DISPLAY + _BOOK + _FORM:
+      return {
+        ...state,
+        mode: _FORM,
+      }
+
     case DISPLAY + _LIST:
       return {
         ...state,

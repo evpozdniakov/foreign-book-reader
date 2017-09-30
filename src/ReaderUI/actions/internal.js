@@ -1,6 +1,8 @@
 import {
   DISPLAY,
   OPEN,
+  _BOOK,
+  _FORM,
   _READER,
   _LIST,
 } from '../constants'
@@ -8,6 +10,13 @@ import {
 export function displayList() {
   return {
     type: DISPLAY + _LIST,
+    data: {},
+  }
+}
+
+export function displayBookForm() {
+  return {
+    type: DISPLAY + _BOOK + _FORM,
     data: {},
   }
 }

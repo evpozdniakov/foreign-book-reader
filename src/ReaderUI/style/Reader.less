@@ -1,14 +1,36 @@
 .reader {
+	display: flex;
+	justify-content: space-between;
+
+	.main-ctnr {
+		flex: 3 1 75%;
+		padding-right: 2rem;
+	}
+
+	.definition-ctnr {
+		flex: 1 1 25%;
+		padding-left: 2rem;
+		min-width: 150px;
+		border-left: 1px solid #ccc;
+
+		.text {
+			margin-bottom: 0.5rem;
+			font-weight: 600;
+		}
+	}
+
 	.controls {
 		margin-bottom: 1rem;
 	}
 
-	.book-title {
-		font-size: 2rem;
-		margin: 2rem 0 1rem;
-	}
+	.book-ctnr {
+		.book-title {
+			font-size: 2rem;
+			margin: 2rem 0 1rem;
+		}
 
-	.book-text {
-		white-space: pre-line;
+		.book-text {
+			white-space: pre-line;
+		}
 	}
 }

@@ -5,7 +5,6 @@ export function handleAddBook(store, next, action) {
   const book = store.getState().bookForm
 
   book.id = getRandomHash()
-  console.log('--- ', book.id)
 
   // TODO: validate book form
 

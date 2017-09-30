@@ -2,14 +2,16 @@ import {
   ADD,
   CHANGE,
   OPEN,
+  TRANSLATE,
   _BOOK,
   _ORIGINAL,
   _READER,
+  _TEXT,
 } from '../constants'
 
 import { makeTitleFromTextIfNeeded } from './bookForm'
 import { handleAddBook } from './books'
-import { handleOpenReader } from './reader'
+import { handleOpenReader, handleTranslateText } from './reader'
 
 export default store => next => action => {
   const { type } = action
@@ -29,6 +31,10 @@ export default store => next => action => {
     case OPEN + _READER: {
       handleOpenReader(store, next, action)
       break
+    }
+
+    case TRANSLATE + _TEXT: {
+      handleTranslateText(store, next, action)
     }
 
     default:

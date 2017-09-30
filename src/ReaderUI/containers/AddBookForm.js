@@ -5,6 +5,7 @@ import InputFile from 'components/InputFile'
 import Input from 'components/Input'
 import Textarea from 'components/Textarea'
 import '../style/AddBookForm.less'
+import { displayList } from '../actions/internal'
 import {
   addBook,
   changeTitle,
@@ -20,6 +21,25 @@ class AddBookForm extends Component {
   }
 
   render() {
+    return (
+      <div className="book-form-ctnr">
+        {this.renderBackLink()}
+        {this.renderForm()}
+      </div>
+    )
+  }
+
+  renderBackLink() {
+    const { displayListAction } = this.props
+
+    return (
+      <div className="controls">
+        <button onClick={displayListAction}>⬅ Назад</button>
+      </div>
+    )
+  }
+
+  renderForm() {
     return (
       <form className="add-book-form" onSubmit={this.curryAddBook()}>
         {this.renderTitleField()}
@@ -94,7 +114,7 @@ class AddBookForm extends Component {
   renderSaveButton() {
     return (
       <div className="paragraph">
-        <button type="submit">Добавить книгу</button>
+        <button type="submit">Добавить</button>
       </div>
     )
   }
@@ -107,4 +127,5 @@ export default connect(state => {
   addBookAction: addBook,
   changeOriginalAction: changeOriginal,
   changeTitleAction: changeTitle,
+  displayListAction: displayList,
 })(AddBookForm)

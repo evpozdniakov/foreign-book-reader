@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import { openReader } from '../actions/internal'
+import '../style/BookList.less'
+import { openReader, displayBookForm } from '../actions/internal'
 
 class BookList extends Component {
   curryOpenReader(id) {
@@ -10,10 +11,27 @@ class BookList extends Component {
   }
 
   render() {
+    return (
+      <div className="book-list-ctnr">
+        {this.renderAddButton()}
+        {this.renderBookLinks()}
+      </div>
+    )
+  }
+
+  renderAddButton() {
+    return <button onClick={this.props.displayBookFormAction}>Добавить книгу</button>
+  }
+
+  renderBookLinks() {
     const { items } = this.props.books
 
     return (
-      <div>{items.map(this.renderLinkToBook.bind(this))}</div>
+      <div className="book-list">
+        <ul>
+          {items.map(this.renderLinkToBook.bind(this))}
+        </ul>
+      </div>
     )
   }
 
@@ -24,11 +42,11 @@ class BookList extends Component {
     }
 
     return (
-      <div key={book.id}>
+      <li key={book.id}>
         <a {...props}>
           {book.title}
         </a>
-      </div>
+      </li>
     )
   }
 }
@@ -37,5 +55,6 @@ export default connect(state => {
   const { books } = state
   return {books}
 }, {
-  openReaderAction: openReader
+  openReaderAction: openReader,
+  displayBookFormAction: displayBookForm,
 })(BookList)
