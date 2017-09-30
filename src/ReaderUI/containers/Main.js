@@ -3,6 +3,7 @@ import { connect } from 'react-redux'
 import AddBookForm from './AddBookForm'
 import BookList from './BookList'
 import Reader from './Reader'
+import '../style/Main.less'
 import {
   _FORM,
   _LIST,
@@ -12,7 +13,7 @@ import {
 class Main extends Component {
   render() {
     return (
-      <div>
+      <div className="reader-ui">
         {this.renderForm()}
         {this.renderList()}
         {this.renderReader()}
