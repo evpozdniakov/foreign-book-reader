@@ -4,6 +4,7 @@
   "description": "Boilerplate for ReactJS project with hot code reloading",
   "scripts": {
     "start": "node server.js",
+    "supervisor": "set NODE_ENV=development&&supervisor --ignore node_modules,.git,front-end --extensions js,json server",
     "lint": "eslint src"
   },
   "repository": {
@@ -50,9 +51,11 @@
   },
   "dependencies": {
     "md5": "^2.2.1",
+    "node-fetch": "^1.7.3",
     "react": "^0.14.6",
     "react-dom": "^0.14.6",
     "react-redux": "^5.0.6",
-    "redux": "^3.7.2"
+    "redux": "^3.7.2",
+    "xml2js": "^0.4.19"
   }
 }
