@@ -145,14 +145,21 @@ class Reader extends Component {
   renderDefinition() {
     const { reader } = this.props
     const { isTranslating, text, error } = reader
+    const { translatedTextVersions } = reader
 
-    var { translatedText } = reader
+    var translatedText
 
     if (isTranslating) {
       translatedText = '...'
     }
     else if (error) {
       translatedText = 'TRANSLATION ERROR'
+    }
+    else if (translatedTextVersions) {
+      translatedText = translatedTextVersions.join('\n')
+    }
+    else {
+      translatedText = ''
     }
 
     return (

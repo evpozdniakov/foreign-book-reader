@@ -32,7 +32,7 @@ export function handleTranslateText(store, next, action) {
       next({
         ...action,
         type: type + _DONE,
-        response: res.translation,
+        response: res.translations,
       })
     })
     .catch(error => {
