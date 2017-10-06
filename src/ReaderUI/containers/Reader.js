@@ -199,11 +199,12 @@ class Reader extends Component {
     )
   }
 
-  renderDefinitionGroup(group) {
+  renderDefinitionGroup(group, index) {
     const { notype, type, variants } = group
+    const groupKey = `definition-group-${index}`
 
     if (notype) {
-      return <div className="no-type">{notype.join(', ')}</div>
+      return <div key={groupKey} className="no-type">{notype.join(', ')}</div>
     }
 
     const dtdd = variants.reduce((res, item, index) => {
@@ -214,7 +215,7 @@ class Reader extends Component {
     }, [])
 
     return (
-      <section className="definition-group">
+      <section key={groupKey} className="definition-group">
         <header>{type}</header>
         <dl>
           {dtdd}
