@@ -83,10 +83,10 @@ class Reader extends Component {
     const spaceAfter = indexOfSpaceAfter < 0 ? text.length :indexOfSpaceAfter
     const durtyPartBefore = text.substring(spaceBefore, selectionStartsAt)
     const durtyPartAfter = text.substring(selectionEndsAt, spaceAfter)
-    const partBeforeMatch = /\W?(\w+)$/.exec(durtyPartBefore)
+    const partBeforeMatch = /\W?([a-zàâçéèêëîïôûùüÿñæœ]+)$/i.exec(durtyPartBefore)
     const partBefore = partBeforeMatch ? partBeforeMatch[1] : ''
     const middlePart = text.substring(selectionStartsAt, selectionEndsAt)
-    const partAfterMatch = /^(\w+)\W?/.exec(durtyPartAfter)
+    const partAfterMatch = /^([a-zàâçéèêëîïôûùüÿñæœ]+)\W?/i.exec(durtyPartAfter)
     const partAfter = partAfterMatch ? partAfterMatch[1] : ''
 
     if (!partAfter && !partBefore) {
@@ -105,7 +105,8 @@ class Reader extends Component {
   }
 
   translateSelectedText() {
-    const text = window.getSelection().toString()
+    const selection = window.getSelection().toString()
+    const text = cleanupSelection(selection)
 
     if (text) {
       this.props.translateTextAction(text)
@@ -151,14 +152,46 @@ class Reader extends Component {
   }
 
   renderDefinition() {
-    const { text } = this.props.reader
-
     return (
       <div className="scroll-ctnr">
-        <div className="text">{text}</div>
-        {this.isTranslating ? '...' : ''}
+        {this.renderTranslatingText()}
         {this.renderTranscription()}
         {this.renderDefinitionGroups()}
+      </div>
+    )
+  }
+
+  renderTranslatingText() {
+    const { text } = this.props.reader
+
+    if (!text) {
+      return null
+    }
+
+    if (this.isTranslating) {
+      return (
+        <div className="text">
+          {text}
+          <br/>
+          {'...'}
+        </div>
+      )
+    }
+
+    const { word } = this.translationInfo
+
+    if (text === word) {
+      return (
+        <div className="text">
+          {text}
+        </div>
+      )
+    }
+
+    return (
+      <div>
+        <div className="text not-found">{text}</div>
+        <div className="text">{word}</div>
       </div>
     )
   }
@@ -204,7 +237,7 @@ class Reader extends Component {
     const groupKey = `definition-group-${index}`
 
     if (notype) {
-      return <div key={groupKey} className="no-type">{notype.join(', ')}</div>
+      return <div key={groupKey} className="no-type">{notype.join(' / ')}</div>
     }
 
     const dtdd = variants.reduce((res, item, index) => {
@@ -232,3 +265,7 @@ export default connect(state => {
   displayListAction: displayList,
   translateTextAction: translateText,
 })(Reader)
+
+function cleanupSelection(text) {
+  return text.split('’').join('\'')
+}
