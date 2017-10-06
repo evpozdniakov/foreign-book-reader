@@ -28,7 +28,7 @@ export default (state={}, action) => {
       return {
         ...state,
         isTranslating: false,
-        translatedTextVersions: response,
+        translationInfo: response,
       }
 
     case TRANSLATE + _TEXT + _FAIL:

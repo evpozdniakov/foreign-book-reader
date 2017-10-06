@@ -28,11 +28,11 @@ export function handleTranslateText(store, next, action) {
 
   fetch(url)
     .then(res => res.json())
-    .then(res => {
+    .then(data => {
       next({
         ...action,
         type: type + _DONE,
-        response: res.translations,
+        response: data,
       })
     })
     .catch(error => {

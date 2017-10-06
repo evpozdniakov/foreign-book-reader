@@ -30,6 +30,14 @@ class Reader extends Component {
     return document.querySelector('.book-ctnr')
   }
 
+  get translationInfo() {
+    return this.props.reader.translationInfo
+  }
+
+  get isTranslating() {
+    return this.props.reader.isTranslating
+  }
+
   handleMousup() {
     if (selectionchangeTimer) {
       clearTimeout(selectionchangeTimer)
@@ -135,7 +143,7 @@ class Reader extends Component {
     } = this.props.reader.book
 
     return (
-      <div className="book-ctnr">
+      <div className="book-ctnr scroll-ctnr">
         <h1 className="book-title">{title}</h1>
         <div className="book-text">{original}</div>
       </div>
@@ -143,30 +151,75 @@ class Reader extends Component {
   }
 
   renderDefinition() {
-    const { reader } = this.props
-    const { isTranslating, text, error } = reader
-    const { translatedTextVersions } = reader
+    const { text } = this.props.reader
 
-    var translatedText
+    return (
+      <div className="scroll-ctnr">
+        <div className="text">{text}</div>
+        {this.isTranslating ? '...' : ''}
+        {this.renderTranscription()}
+        {this.renderDefinitionGroups()}
+      </div>
+    )
+  }
 
-    if (isTranslating) {
-      translatedText = '...'
+  renderTranscription() {
+    if (this.isTranslating) {
+      return null
     }
-    else if (error) {
-      translatedText = 'TRANSLATION ERROR'
-    }
-    else if (translatedTextVersions) {
-      translatedText = translatedTextVersions.join('\n')
-    }
-    else {
-      translatedText = ''
+
+    const { transcription } = this.translationInfo || {}
+
+    if (!transcription) {
+      return null
     }
 
     return (
-      <div className="translation-ctnr">
-        <div className="text">{text}</div>
-        <div className="translatedText">{translatedText}</div>
+      <div className="transcription">
+        {transcription}
       </div>
+    )
+  }
+
+  renderDefinitionGroups() {
+    if (this.isTranslating) {
+      return null
+    }
+
+    const { definitions } = this.translationInfo || {}
+
+    if (!definitions) {
+      return null
+    }
+
+    return (
+      <div className="definitions">
+        {definitions.map(this.renderDefinitionGroup.bind(this))}
+      </div>
+    )
+  }
+
+  renderDefinitionGroup(group) {
+    const { notype, type, variants } = group
+
+    if (notype) {
+      return <div className="no-type">{notype.join(', ')}</div>
+    }
+
+    const dtdd = variants.reduce((res, item, index) => {
+      return res.concat([
+        <dt key={`dt-${index}`}><i>{item.translation}</i></dt>,
+        <dd key={`dd-${index}`}>{item.backTranslations}</dd>,
+      ])
+    }, [])
+
+    return (
+      <section className="definition-group">
+        <header>{type}</header>
+        <dl>
+          {dtdd}
+        </dl>
+      </section>
     )
   }
 }
