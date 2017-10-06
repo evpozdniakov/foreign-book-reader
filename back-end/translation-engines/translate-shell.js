@@ -1,7 +1,13 @@
+var consecutiveFails = 0;
+
 exports.useTranslateShell = (req, res) => {
+  executeTranslateShellCommand(res, req.params.text);
+}
+
+function executeTranslateShellCommand(res, text) {
   const { exec } = require('child_process');
 
-  exec(`trans -s en -t ru '${req.params.text}'`, (error, stdout, stderr) => {
+  exec(`trans -s en -t ru ${wrapInQuotes(text)}`, (error, stdout, stderr) => {
     if (error !== null) {
       console.error('exec error: ' + error);
       res.status(500).send('System error');
@@ -10,13 +16,34 @@ exports.useTranslateShell = (req, res) => {
     }
 
     if (stderr) {
-      res.status(500).send(stderr);
+      if (isDidYouMeanCase(stderr) && ++consecutiveFails < 3) {
+        handleDidYouMeanCase(res, stderr);
+
+        return;
+      }
+
+      res.status(500).send({
+        error: cleanupText(stderr),
+      });
 
       return;
     }
 
     res.send(switchToHypertextMarkup(stdout));
+    consecutiveFails = 0;
   });
+}
+
+function wrapInQuotes(text) {
+  if (text.indexOf('\'') < 0) {
+    return `'${text}'`;
+  }
+
+  if (text.indexOf('"') < 0) {
+    return `"${text}"`;
+  }
+
+  return `"${text.split('"').join(' ').trim()}"`;
 }
 
 function switchToHypertextMarkup(text) {
@@ -50,9 +77,9 @@ function parseGroupText(text) {
   const type = lines[0];
 
   if (type.indexOf('[4m') >= 0) {
-    return {
-      notype: lines.slice(1).map(text => cleanupText(text)).filter(text => !!text)
-    };
+    let notype = lines[1].split('[22m,').map(cleanupText);
+
+    return {notype};
   }
 
   const variants = lines.slice(1).reduce((res, line, index, arr) => {
@@ -82,5 +109,17 @@ function cleanupText(text) {
     .split('[22m').join('')
     .split('[4m').join('')
     .split('[24m').join('')
+    .split('[33m').join('')
+    .split('[0m').join('')
     .trim()
+}
+
+function isDidYouMeanCase(stderr) {
+  return stderr.indexOf('Did you mean:') >= 0;
+}
+
+function handleDidYouMeanCase(res, stderr) {
+  const alternative = cleanupText(stderr).split('Did you mean:')[1].trim()
+
+  executeTranslateShellCommand(res, alternative);
 }
