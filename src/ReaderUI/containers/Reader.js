@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
 import { displayList } from '../actions/internal'
-import { translateText } from '../actions/reader'
+import { pronounceText, translateText } from '../actions/reader'
 import '../style/Reader.less'
 
 var propTypes
@@ -36,6 +36,12 @@ class Reader extends Component {
 
   get isTranslating() {
     return this.props.reader.isTranslating
+  }
+
+  curryPronounceText(text) {
+    return () => {
+      this.props.pronounceTextAction(text)
+    }
   }
 
   handleMousup() {
@@ -156,6 +162,7 @@ class Reader extends Component {
       <div className="scroll-ctnr">
         {this.renderTranslatingText()}
         {this.renderTranscription()}
+        {this.renderAudioIframe()}
         {this.renderDefinitionGroups()}
       </div>
     )
@@ -178,12 +185,13 @@ class Reader extends Component {
       )
     }
 
-    const { word } = this.translationInfo
+    const { transcription, word } = this.translationInfo
 
     if (text === word) {
       return (
         <div className="text">
           {text}
+          {transcription ? null : this.renderSpeakerButton()}
         </div>
       )
     }
@@ -191,8 +199,19 @@ class Reader extends Component {
     return (
       <div>
         <div className="text not-found">{text}</div>
-        <div className="text">{word}</div>
+        <div className="text">
+          {word}
+          {transcription ? null : this.renderSpeakerButton()}
+        </div>
       </div>
+    )
+  }
+
+  renderSpeakerButton() {
+    return (
+      <button className="tts-button" onClick={this.curryPronounceText()}>
+        🔈
+      </button>
     )
   }
 
@@ -201,7 +220,8 @@ class Reader extends Component {
       return null
     }
 
-    const { transcription } = this.translationInfo || {}
+    const { text } = this.props.reader
+    const { transcription, word } = this.translationInfo || {}
 
     if (!transcription) {
       return null
@@ -210,6 +230,33 @@ class Reader extends Component {
     return (
       <div className="transcription">
         {transcription}
+        {this.renderSpeakerButton(word)}
+      </div>
+    )
+  }
+
+  renderAudioIframe() {
+    if (this.isTranslating) {
+      return null
+    }
+
+    const { word } = this.translationInfo || {}
+
+    if (!word) {
+      return null
+    }
+
+    const { pronounce } = this.props.reader
+
+    if (pronounce % 2 === 0) {
+      return null
+    }
+
+    const src = `https://translate.googleapis.com/translate_tts?ie=UTF-8&client=gtx&tl=en&q=${encodeURIComponent(word)}`
+
+    return (
+      <div className="audio-iframe">
+        <iframe src={src} width="1" height="1" />
       </div>
     )
   }
@@ -263,6 +310,7 @@ export default connect(state => {
   return {reader}
 }, {
   displayListAction: displayList,
+  pronounceTextAction: pronounceText,
   translateTextAction: translateText,
 })(Reader)
 

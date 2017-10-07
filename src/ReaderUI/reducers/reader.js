@@ -1,5 +1,6 @@
 import {
   OPEN,
+  PRONOUNCE,
   TRANSLATE,
   _READER,
   _TEXT,
@@ -16,9 +17,16 @@ export default (state={}, action) => {
         book: data.book,
       }
 
+    case PRONOUNCE + _TEXT:
+      return {
+        ...state,
+        pronounce: 1 + state.pronounce,
+      }
+
     case TRANSLATE + _TEXT + _START:
       return {
         ...state,
+        pronounce: 0,
         isTranslating: true,
         error: null,
         text: data.text,
@@ -45,11 +53,13 @@ export default (state={}, action) => {
 
 export function getInitState(data) {
   const {
-    book={}
+    book={},
+    pronounce=0,
   } = data || {}
 
   return {
     book,
+    pronounce,
   }
 }
 

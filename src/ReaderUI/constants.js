@@ -2,6 +2,7 @@ export const ADD = 'ADD'
 export const CHANGE = 'CHANGE'
 export const DISPLAY = 'DISPLAY'
 export const OPEN = 'OPEN'
+export const PRONOUNCE = 'PRONOUNCE'
 export const TRANSLATE = 'TRANSLATE'
 
 export const _BOOK = '_BOOK'

@@ -3,6 +3,8 @@ import {
   _START, _DONE, _FAIL,
 } from '../constants'
 
+import { pronounceText } from '../actions/reader'
+
 export function handleOpenReader(store, next, action) {
   const { type, data } = action
   const { bookId } = data
@@ -42,4 +44,16 @@ export function handleTranslateText(store, next, action) {
         error,
       })
     })
+}
+
+export function handlePronounce(store, next, action) {
+  next(action)
+
+  const { pronounce } = store.getState().reader
+
+  if (pronounce % 2 === 0) {
+    setTimeout(() => {
+      store.dispatch(pronounceText())
+    }, 0)
+  }
 }

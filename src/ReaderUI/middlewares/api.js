@@ -2,6 +2,7 @@ import {
   ADD,
   CHANGE,
   OPEN,
+  PRONOUNCE,
   TRANSLATE,
   _BOOK,
   _ORIGINAL,
@@ -11,7 +12,7 @@ import {
 
 import { makeTitleFromTextIfNeeded } from './bookForm'
 import { handleAddBook } from './books'
-import { handleOpenReader, handleTranslateText } from './reader'
+import { handleOpenReader, handlePronounce, handleTranslateText } from './reader'
 
 export default store => next => action => {
   const { type } = action
@@ -33,8 +34,14 @@ export default store => next => action => {
       break
     }
 
+    case PRONOUNCE + _TEXT: {
+      handlePronounce(store, next, action)
+      break
+    }
+
     case TRANSLATE + _TEXT: {
       handleTranslateText(store, next, action)
+      break
     }
 
     default:
