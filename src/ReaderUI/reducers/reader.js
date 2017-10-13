@@ -15,6 +15,9 @@ export default (state={}, action) => {
       return {
         ...state,
         book: data.book,
+        pronounce: 0,
+        translationInfo: {},
+        translatingText: '',
       }
 
     case PRONOUNCE + _TEXT:
@@ -29,7 +32,7 @@ export default (state={}, action) => {
         pronounce: 0,
         isTranslating: true,
         error: null,
-        text: data.text,
+        translatingText: data.text,
       }
 
     case TRANSLATE + _TEXT + _DONE:
@@ -55,6 +58,7 @@ export function getInitState(data) {
   const {
     book={},
     pronounce=0,
+    translationInfo={},
   } = data || {}
 
   return {

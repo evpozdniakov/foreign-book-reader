@@ -1,7 +1,7 @@
 {
-  "name": "react-hot-boilerplate",
-  "version": "1.0.0",
-  "description": "Boilerplate for ReactJS project with hot code reloading",
+  "name": "foreign-book-reader",
+  "version": "0.0.1",
+  "description": "Will help to read English text by providing translations of selected words.",
   "scripts": {
     "start": "node server.js",
     "supervisor": "set NODE_ENV=development&&supervisor --ignore node_modules,.git,front-end --extensions js,json server",
@@ -9,25 +9,19 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/gaearon/react-hot-boilerplate.git"
+    "url": "https://github.com/evpozdniakov/foreign-book-reader"
   },
   "keywords": [
-    "react",
-    "reactjs",
-    "boilerplate",
-    "hot",
-    "reload",
-    "hmr",
-    "live",
-    "edit",
-    "webpack"
+    "foreign book reader",
+    "text",
+    "translate"
   ],
-  "author": "Dan Abramov <dan.abramov@me.com> (http://github.com/gaearon)",
+  "author": "Evgeniy Pozdnyakov <evpozdniakov@gmail.com>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/gaearon/react-hot-boilerplate/issues"
+    "url": "https://github.com/evpozdniakov/foreign-book-reader/issues"
   },
-  "homepage": "https://github.com/gaearon/react-hot-boilerplate",
+  "homepage": "https://github.com/evpozdniakov/foreign-book-reader",
   "devDependencies": {
     "babel-core": "^6.0.20",
     "babel-eslint": "^4.1.3",

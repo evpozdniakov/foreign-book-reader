@@ -38,9 +38,9 @@ class Reader extends Component {
     return this.props.reader.isTranslating
   }
 
-  curryPronounceText(text) {
+  curryPronounceText() {
     return () => {
-      this.props.pronounceTextAction(text)
+      this.props.pronounceTextAction()
     }
   }
 
@@ -169,16 +169,16 @@ class Reader extends Component {
   }
 
   renderTranslatingText() {
-    const { text } = this.props.reader
+    const { translatingText } = this.props.reader
 
-    if (!text) {
+    if (!translatingText) {
       return null
     }
 
     if (this.isTranslating) {
       return (
         <div className="text">
-          {text}
+          {translatingText}
           <br/>
           {'...'}
         </div>
@@ -187,10 +187,10 @@ class Reader extends Component {
 
     const { transcription, word } = this.translationInfo
 
-    if (text === word) {
+    if (translatingText === word) {
       return (
         <div className="text">
-          {text}
+          {translatingText}
           {transcription ? null : this.renderSpeakerButton()}
         </div>
       )
@@ -198,7 +198,7 @@ class Reader extends Component {
 
     return (
       <div>
-        <div className="text not-found">{text}</div>
+        <div className="text not-found">{translatingText}</div>
         <div className="text">
           {word}
           {transcription ? null : this.renderSpeakerButton()}
