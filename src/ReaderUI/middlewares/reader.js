@@ -1,4 +1,3 @@
-import { API_KEY } from '../../../api-key'
 import {
   _START, _DONE, _FAIL,
 } from '../constants'

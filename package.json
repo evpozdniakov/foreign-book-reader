@@ -1,6 +1,6 @@
 {
   "name": "foreign-book-reader",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Will help to read English text by providing translations of selected words.",
   "scripts": {
     "start": "node server.js",
